@@ -15,6 +15,9 @@ public class Mover : MonoBehaviour
         {
             MoveToCursor();
         }
+
+        // 11. Call UpdateAnimator();
+        UpdateAnimator();
     }
 
     // 5.
@@ -32,5 +35,19 @@ public class Mover : MonoBehaviour
             // 2. Within Update method, get NavMeshAgent component and set its destination value as the target's current position
             GetComponent<NavMeshAgent>().destination = hit.point;
         }
+    }
+
+
+    private void UpdateAnimator()
+    {
+        // 8. Gather the global velocity and convert it to a local velocity so that our Animator has simple instructions for moving in a direction at a certain speed
+        Vector3 velocity = GetComponent<NavMeshAgent>().velocity;
+        Vector3 localVelocity = transform.InverseTransformDirection(velocity);
+
+        // 9. Creating speed variable to hold the single velocity we need
+        float speed = localVelocity.z;
+
+        // 10. Setting the speed within the Animator
+        GetComponent<Animator>().SetFloat("forwardSpeed", speed);
     }
 }
